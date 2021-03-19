@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test';
+
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 const { server } = require("../index");
@@ -35,6 +37,7 @@ describe("Critter API", () => {
     describe("POST /critter", () => {
         it("logs a purple giraffe named Zed", done => {
             const zed = {
+                id: undefined,
                 type: "giraffe",
                 legs: 4,
                 color: "purple",
@@ -47,7 +50,7 @@ describe("Critter API", () => {
                 .send(zed)
                 .end((err, res) => {
                     expect(res).to.have.status(200);
-                    expect(res.body).to.deep.equal(zed);
+                    expect({ ...res.body, id: undefined }).to.deep.equal(zed);
                     done();
                 });
         });

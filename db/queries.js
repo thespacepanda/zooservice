@@ -10,7 +10,17 @@ function getAll() {
     return Critters().select();
 }
 
+function getSingle(critterID) {
+    return Critters().where("id", parseInt(critterID)).first();
+}
+
+function add(critter) {
+    return Critters().insert(critter, "id");
+}
+
 
 module.exports = {
-    getAll: getAll
+    getAll,
+    getSingle,
+    add
 };
