@@ -1,0 +1,25 @@
+{
+  "name": "zooservice",
+  "version": "0.0.1",
+  "description": "REST api to manage your zoo",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --watch",
+    "coverage": "nyc report --reporter=json",
+    "test": "nyc mocha test/*.js",
+    "lint": "eslint *.js test/*.js --fix"
+  },
+  "author": "spacepanda",
+  "license": "ISC",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-http": "^4.3.0",
+    "mocha": "^8.3.2",
+    "nodemon": "^2.0.7",
+    "nyc": "^15.1.0"
+  },
+  "dependencies": {
+    "koa": "^2.13.1",
+    "koa-router": "^10.0.0"
+  }
+}
