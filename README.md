@@ -15,7 +15,7 @@ A sample of my private zoo database has been uploaded for your convenience in `d
     npx knex seed:run --env development
     npx knex seed:run --env test
     
-That should get you up and running with a random set of quirky animals.
+That should get you up and running with a random set of quirky animals on port 3000.
 
 ### Testing
 
@@ -27,7 +27,7 @@ To actually run the server, simply run `yarn dev`, and the server will restart i
 
 ## API
 
-ZooService exposes one endpoint (/critter) with a variety of options:
+ZooService exposes one endpoint (/critter on port 3000) with a variety of options:
 
 * `GET /critter` will return all critters in the table
 * `GET /critter/:id` will return the critter with the provided id, if it exists
@@ -35,3 +35,12 @@ ZooService exposes one endpoint (/critter) with a variety of options:
 * `POST /critter` accepts json input and will return snarky error messages if your critter is malformed
 * `PUT /critter/:id` also accepts json input and updates the existing critter at :id to match the data sent
 * `DELETE /critter/:id` removes the given critter from the database
+
+## TODO
+
+Some nice to haves to round this little mock service out
+
+* Authentication
+* Fuzzy search (right now it is exact)
+* Handler or Staff table that relates to critters (i.e. Handler Bob is responsible for George the monkey on Tuesdays and Thursdays)
+* Dockerfile
