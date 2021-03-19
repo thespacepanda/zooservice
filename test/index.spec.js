@@ -44,6 +44,16 @@ describe("Critter API", () => {
                     done();
                 });
         });
+
+        it("searches for giraffes", done => {
+            chai
+                .request(server)
+                .get("/critter?type=giraffe")
+                .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    done();
+                });
+        });
     });
 
     describe('GET /critter/:id', function() {

@@ -28,6 +28,18 @@ class CritterController {
         else return queries.getAll();
     }
 
+    search(query) {
+        // probably being paranoid but let's restrict this to keys we care about
+        const allowed = ["type", "legs", "color", "name"];
+        const sanitizedQuery = Object.keys(query)
+              .filter(key => allowed.includes(key))
+              .reduce((obj, key) => ({
+                  ...obj,
+                  [key]: query[key]
+              }), {});
+        return queries.search(sanitizedQuery);
+    }
+
     async post(critter) {
         const snark = this._validate(critter);
         if (snark) return snark;

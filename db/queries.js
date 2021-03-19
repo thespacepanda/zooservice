@@ -26,10 +26,15 @@ function remove(critterID) {
     return Critters().where("id", parseInt(critterID)).del();
 }
 
+function search(query) {
+    return Critters().where(query);
+}
+
 module.exports = {
     getAll,
     getSingle,
     add,
     update,
-    remove
+    remove,
+    search
 };

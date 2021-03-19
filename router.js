@@ -6,7 +6,7 @@ const Critters = new CritterController();
 const route = router
       .get("get-critters", "/critter", async ctx => {
           if (Object.keys(ctx.query).length) {
-              // implement search here
+              ctx.body = await Critters.search(ctx.query);
           }
           else {
               ctx.body = await Critters.get();
