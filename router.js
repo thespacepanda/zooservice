@@ -1,13 +1,19 @@
 const router = require("koa-router")();
-
-const critters = [];
+const queries = require("./db/queries.js");
 
 const route = router
-      .get("home", "/", home)
+      .get("get-critters", "/critter", getCritters)
       .post("log-critter", "/critter", logCritter);
 
-async function home(ctx) {
-    ctx.body = "Hello World";
+async function getCritters(ctx) {
+    try {
+        const critters = await queries.getAll();
+        ctx.body = critters;
+    }
+    catch (e) {
+        ctx.status(500);
+        console.dir(e);
+    }
 }
 
 async function logCritter(ctx) {
@@ -19,8 +25,6 @@ async function logCritter(ctx) {
     ctx.assert(validCritter, 400, "critter's missin' a few parts there, bud.");
     // if the assertion fails execution is halted;
     // no need for an additional if check here
-    critters.push(critter);
-    console.dir(critters);
     ctx.body = critter;
 }
 

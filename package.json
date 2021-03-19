@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon --watch",
     "coverage": "nyc report --reporter=json",
-    "test": "nyc mocha test/*.js",
+    "test": "nyc mocha test/*.js --exit",
     "lint": "eslint *.js test/*.js --fix"
   },
   "author": "spacepanda",
@@ -19,7 +19,9 @@
     "nyc": "^15.1.0"
   },
   "dependencies": {
+    "knex": "^0.95.2",
     "koa": "^2.13.1",
+    "koa-body": "^4.2.0",
     "koa-router": "^10.0.0",
     "pg": "^8.5.1"
   }
