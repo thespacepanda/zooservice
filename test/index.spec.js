@@ -34,6 +34,30 @@ describe("Critter API", () => {
         server.close();
     });
 
+    describe("GET /critter", () => {
+        it("gets all critters", done => {
+            chai
+                .request(server)
+                .get("/critter")
+                .end((err, res) => {
+                    expect(res).to.have.status(200);
+                    done();
+                });
+        });
+    });
+
+    describe('GET /critter/:id', function() {
+        it('should return a single critter', function(done) {
+            chai
+                .request(server)
+                .get('/critter/1')
+                .end(function(err, res) {
+                    expect(res).to.have.status(200);
+                    done();
+                });
+        });
+    });
+
     describe("POST /critter", () => {
         it("logs a purple giraffe named Zed", done => {
             const zed = {
@@ -74,11 +98,16 @@ describe("Critter API", () => {
         });
     });
 
-    describe("GET /critter", () => {
-        it("gets all critters", done => {
+    describe("PUT /critter/:id", () => {
+        it("changes the first critter's color to brown", done => {
+            const brown = {
+                color: "brown"
+            };
             chai
                 .request(server)
-                .get("/critter")
+                .put("/critter/1")
+                .set("content-type", "application/json")
+                .send(brown)
                 .end((err, res) => {
                     expect(res).to.have.status(200);
                     done();
@@ -86,12 +115,12 @@ describe("Critter API", () => {
         });
     });
 
-    describe('GET /critter/:id', function() {
-        it('should return a single critter', function(done) {
+    describe("DELETE /critter/:id", () => {
+        it("deletes the first critter", done => {
             chai
                 .request(server)
-                .get('/critter/1')
-                .end(function(err, res) {
+                .delete("/critter/1")
+                .end((err, res) => {
                     expect(res).to.have.status(200);
                     done();
                 });

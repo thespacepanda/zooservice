@@ -18,9 +18,18 @@ function add(critter) {
     return Critters().insert(critter, "id");
 }
 
+function update(critterID, updates) {
+    return Critters().where("id", parseInt(critterID)).update(updates);
+}
+
+function remove(critterID) {
+    return Critters().where("id", parseInt(critterID)).del();
+}
 
 module.exports = {
     getAll,
     getSingle,
-    add
+    add,
+    update,
+    remove
 };
