@@ -92,7 +92,6 @@ describe("Critter API", () => {
                 .send(zed)
                 .end((err, res) => {
                     expect(res).to.have.status(400);
-                    expect(res.text).equal("critter's missin' a few parts there, bud.");
                     done();
                 });
         });

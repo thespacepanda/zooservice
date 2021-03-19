@@ -1,49 +1,37 @@
 const router = require("koa-router")();
-const queries = require("./db/queries.js");
+const CritterController = require("./critter.js");
+
+const Critters = new CritterController();
 
 const route = router
-      .get("get-critters", "/critter", getCritters)
-      .get("get-critter", "/critter/:id", getCritter)
-      .post("log-critter", "/critter", logCritter)
-      .put("update-critter", "/critter/:id", updateCritter)
-      .del("remove-critter", "/critter/:id", removeCritter);
-
-async function getCritters(ctx) {
-    console.dir(ctx.query);
-    if (Object.keys(ctx.query).length) {
-        console.log("we got some queries, ladies.");
-    }
-    const critters = await queries.getAll();
-    ctx.body = critters;
-}
-
-async function getCritter(ctx) {
-    const critter = await queries.getSingle(ctx.params.id);
-    ctx.body = critter;
-}
-
-async function logCritter(ctx) {
-    const critter = ctx.request.body;
-    const validCritter = critter.hasOwnProperty("type")
-        && critter.hasOwnProperty("legs")
-        && critter.hasOwnProperty("color")
-        && critter.hasOwnProperty("name");
-    ctx.assert(validCritter, 400, "critter's missin' a few parts there, bud.");
-    // if the assertion fails execution is halted;
-    // no need for an additional if check here
-    const newCritter = await queries.add(critter);
-    ctx.body = await queries.getSingle(newCritter);
-}
-
-async function updateCritter(ctx) {
-    const critter = await queries.update(ctx.params.id, ctx.request.body);
-    ctx.body = await queries.getSingle(ctx.params.id);
-}
-
-async function removeCritter(ctx) {
-    const removedCritters = await queries.remove(ctx.params.id);
-    ctx.body = removedCritters;
-}
+      .get("get-critters", "/critter", async ctx => {
+          if (Object.keys(ctx.query).length) {
+              // implement search here
+          }
+          else {
+              ctx.body = await Critters.get();
+          }
+      })
+      .get("get-critter", "/critter/:id", async ctx => {
+          ctx.body = await Critters.get(ctx.params.id);
+      })
+      .post("log-critter", "/critter", async ctx => {
+          const critterOrSnark = await Critters.post(ctx.request.body);
+          // if controller gives us snark we send it with a 400 status
+          ctx.assert(typeof(critterOrSnark) !== "string", 400, critterOrSnark);
+          // otherwise we know it's the critter we just inserted
+          ctx.body = critterOrSnark;
+      })
+      .put("update-critter", "/critter/:id", async ctx => {
+          const critterOrSnark = await Critters.update(ctx.params.id, ctx.request.body);
+          // same story here since we need to validate the amount of legs we're getting
+          ctx.assert(typeof(critterOrSnark) !== "string", 400, critterOrSnark);
+          ctx.body = critterOrSnark;
+      })
+      .del("remove-critter", "/critter/:id", async ctx => {
+          // controller either returns 1 or 0 in this case (# of deleted rows)
+          ctx.body = await Critters.remove(ctx.params.id);
+      });
 
 module.exports = {
     route
